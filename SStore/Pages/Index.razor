@@ -1,0 +1,87 @@
+﻿@page "/"
+@using SStore.Model.Data.Dtos;
+@using SStore.Model.Data.Entities;
+@using SStore.Services
+@inject ICounterServicecs counter
+@inject IAppUserService appuserService
+@inherits LayoutComponentBase
+
+@using SStore.Pages
+
+    
+<MudPaper >
+    <MudContainer MaxWidth="MaxWidth.Small">
+        
+           <MudCard>
+               <MudCardHeader>
+                   <h3>الطلبات</h3>
+               </MudCardHeader>
+           </MudCard>
+       
+    </MudContainer>
+</MudPaper>
+@code{
+    bool showTitle = true;
+
+    List<AppUserDto>? appUsers;
+
+    protected override void OnInitialized()
+    {
+        var appuser = new AppUser
+            {
+                Email = "sa@mail.com",
+                FirstName = "said",
+                LastName = "ALsalti",
+                UserName = "sa@mail.com",
+                IsActive = true,
+                PhoneNumber = "9999"
+            };
+       // appuserService.InsertUser(appuser);
+        appUsers = appuserService.GetAppUsers();
+    }
+
+    private void togleTitle()
+    {
+        showTitle = !showTitle;
+    }
+}
+
+//public OrderDetal(
+   //      int? id, int? orderId, int? productId, string? price, string? quantity, string? orderTotalPrice, Order? order, OrderDetal? orderDetal)
+        {
+            Id = id;
+            OrderId = orderId;
+            ProductId = productId;
+            Price = price;
+            Quantity = quantity;
+            OrderTotalPrice = orderTotalPrice;
+            Order = order;
+            OrderDetal = orderDetal;
+       }
+
+
+@code{
+    int num = 0;
+
+    void Incremnt()
+    {
+        num = counter.Increment(num);
+    }
+
+    void Decrement()
+    {
+        num = counter.Decrement(num);
+
+    }
+}
+
+
+@code {
+    bool _drawerOpen = true;
+
+    void DrawerToggle()
+    {
+        _drawerOpen = !_drawerOpen;
+    }
+
+}
