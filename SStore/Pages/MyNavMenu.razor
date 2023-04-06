@@ -1,13 +1,13 @@
 ﻿
 
     <MudNavMenu>
-        <MudNavLink Href="/" Match="NavLinkMatch.All">Dashboard</MudNavLink>
-        <MudNavLink Href="/servers" Match="NavLinkMatch.Prefix">Servers</MudNavLink>
-        <MudNavGroup Title="Settings" Expanded="true">
-            <MudNavLink Href="/users" Match="NavLinkMatch.Prefix">Users</MudNavLink>
-            <MudNavLink Href="/security" Match="NavLinkMatch.Prefix">Security</MudNavLink>
-        </MudNavGroup>
-        <MudNavLink Href="/about" Match="NavLinkMatch.Prefix">About</MudNavLink>
+
+    
+        <MudNavLink Href="/" Icon="@Icons.Material.Filled.Home" Match="NavLinkMatch.All">الرئيسية</MudNavLink>
+    <MudNavLink Icon="@Icons.Material.Filled.Login" Href="/account/login" Match="NavLinkMatch.Prefix">تسجيل الدخول</MudNavLink>
+    <MudNavLink Icon="@Icons.Material.Filled.AppRegistration" Href="/account/register" Match="NavLinkMatch.Prefix">تسجيل جديد</MudNavLink>
+
+    <MudNavLink Href="/about" Icon="@Icons.Material.Filled.RoundaboutLeft" Match="NavLinkMatch.Prefix">عن المتجر</MudNavLink>
     </MudNavMenu>
 
 

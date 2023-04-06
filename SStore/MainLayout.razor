@@ -2,6 +2,7 @@
 
 @using SStore.Pages
 
+<MudRTLProvider RightToLeft="true">
 <MudThemeProvider />
 <MudDialogProvider />
 <MudSnackbarProvider />
@@ -9,7 +10,7 @@
 <MudLayout >
     <MudAppBar>
         <MudIconButton Icon="@Icons.Material.Filled.Menu" Color="Color.Inherit" Edge="Edge.Start" OnClick="@((e) => DrawerToggle())" />
-        My Application
+        المتجر الإلكتروني
     </MudAppBar>
     <MudDrawer @bind-Open="@_drawerOpen">
         <MyNavMenu/>
@@ -18,7 +19,10 @@
     <MudMainContent>
         @Body
     </MudMainContent>
+
 </MudLayout>
+
+</MudRTLProvider>
 @code {
     bool _drawerOpen = true;
 

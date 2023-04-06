@@ -1,0 +1,5 @@
+﻿سوف نستخدم jwt 
+وهو مستخدم للمصادقة وحفظ userid
+
+1- install  Microsoft.AspNetCore.Authentication.JwtBearer
+2- نضيف الاعدادات

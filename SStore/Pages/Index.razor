@@ -8,13 +8,19 @@
 
 @using SStore.Pages
 
+    @{
+        if (!string.IsNullOrEmpty(errorMessage))
+        {
+           <div class="alert alert-danger">@errorMessage</div>
+        }
+        }
     
 <MudPaper >
-    <MudContainer MaxWidth="MaxWidth.Small">
+    <MudContainer MaxWidth="MaxWidth.Large">
         
            <MudCard>
                <MudCardHeader>
-                   <h3>الطلبات</h3>
+                  
                </MudCardHeader>
            </MudCard>
        
@@ -24,64 +30,36 @@
     bool showTitle = true;
 
     List<AppUserDto>? appUsers;
+    string? errorMessage = null;
 
     protected override void OnInitialized()
     {
+        appUsers = appuserService.GetAppUsers();
+
         var appuser = new AppUser
             {
-                Email = "sa@mail.com",
+                Email = "sa@mail.com".Trim().ToLower(),
                 FirstName = "said",
                 LastName = "ALsalti",
-                UserName = "sa@mail.com",
+                UserName = "sa@mail.com".Trim().ToLower(),
                 IsActive = true,
                 PhoneNumber = "9999"
             };
+        if (appuserService.IsReadyUserNameAdded(appuser.UserName))
+        {
+            errorMessage = "اسم المستخدم مسجل بالنظام";
+            return;
+        }
+        if (appuserService.IsReadyEmailAdded(appuser.Email))
+        {
+            errorMessage = "البريد الإلكتروني مسجل بالنظام";
+            return;
+        }
        // appuserService.InsertUser(appuser);
-        appUsers = appuserService.GetAppUsers();
     }
 
     private void togleTitle()
     {
         showTitle = !showTitle;
     }
-}
-
-//public OrderDetal(
-   //      int? id, int? orderId, int? productId, string? price, string? quantity, string? orderTotalPrice, Order? order, OrderDetal? orderDetal)
-        {
-            Id = id;
-            OrderId = orderId;
-            ProductId = productId;
-            Price = price;
-            Quantity = quantity;
-            OrderTotalPrice = orderTotalPrice;
-            Order = order;
-            OrderDetal = orderDetal;
-       }
-
-
-@code{
-    int num = 0;
-
-    void Incremnt()
-    {
-        num = counter.Increment(num);
-    }
-
-    void Decrement()
-    {
-        num = counter.Decrement(num);
-
-    }
-}
-
-
-@code {
-    bool _drawerOpen = true;
-
-    void DrawerToggle()
-    {
-        _drawerOpen = !_drawerOpen;
-    }
-
 }

@@ -1,0 +1,14 @@
+﻿@page "/products/list"
+
+@inject IHttpContextAccessor _context
+<h1>@name</h1>
+
+@code {
+    string name = "";
+    protected override void OnInitialized()
+    {
+         name = _context.HttpContext.Session.GetString("name");
+      //  _context.HttpContext.Session.SetString("name", "said alsalti");
+        base.OnInitialized();
+    }
+}

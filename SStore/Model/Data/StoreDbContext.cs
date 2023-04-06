@@ -19,7 +19,7 @@ namespace SStore.Model.Data
         public DbSet<OrderStatus> OrderStatus { get; set; }
         public DbSet<Payment> Payments { get; set; }
         public DbSet<PaymentMathod> PaymentMathods { get; set; }
-
+        public DbSet<AppStorge> AppStorges { get; set; }
     }
 
   

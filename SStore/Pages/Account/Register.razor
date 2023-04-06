@@ -1,0 +1,143 @@
+﻿@page "/account/register"
+@using SStore.Model.Data.Dtos;
+@using System.ComponentModel.DataAnnotations;
+@using System.Text.RegularExpressions
+@using SStore.Services;
+@inject SStore.Services.IAppUserService userService
+@inject IAppSnackbarService Snackbar
+<MudGrid Justify="Justify.Center">
+    <MudItem Style="margin-top:20px"  xs="12" >
+     
+    </MudItem>
+    <MudItem xs="10"  >
+        <MudCard Elevation="5" Style="height:75vh;"  Outlined="false"  >
+           
+            <MudCardHeader  >
+                <CardHeaderContent>
+                    <MudText Color="Color.Secondary" Align="Align.Center"
+                    Typo="Typo.h4">نظام المبيعات الالكتروني</MudText>
+                </CardHeaderContent>
+            </MudCardHeader>
+            <MudCardContent>
+                  <MudGrid Class="mt-5" Justify="Justify.Center">
+    
+                <MudItem xs="12" sm="6" md="4" lg="4">
+                    <MudPaper Class="pa-4">
+                            <MudForm @ref="form" Model="@input"  @bind-IsValid="@success" @bind-Errors="@errors">
+                                <MudTextField @bind-Value="input!.Email" Required="true" Variant="Variant.Outlined" For="@(()=>input!.Email)" Label="البريد الإلكتروني"></MudTextField>
+                                <MudTextField @bind-Value="input!.UserName" Required="true" Variant="Variant.Outlined" For="@(()=>input!.Email)" Label="اسم المستخدم"></MudTextField>
+
+                                <MudTextField @bind-Value="input!.Password" Required="true" Variant="Variant.Outlined" InputType="PasswordInput"
+                                              Adornment="Adornment.End"
+                                              AdornmentIcon="@PasswordInputIcon"
+                                              AdornmentAriaLabel="إظهار كلمة المرور"
+                                              OnAdornmentClick="OnClickShowPassword"
+                                              For="@(()=>input!.Password)" Label="كلمة المرور"></MudTextField>
+                                <MudTextField @bind-Value="input!.FirstName" Required="true" Variant="Variant.Outlined" For="@(()=>input!.FirstName)" Label="الاسم الأول"></MudTextField>
+                                <MudTextField @bind-Value="input!.LastName" Required="true" Variant="Variant.Outlined" For="@(()=>input!.LastName)" Label="الاسم الأخير"></MudTextField>
+                                <MudTextField @bind-Value="input!.PhoneNumber" Required="true" Variant="Variant.Outlined" InputType="InputType.Telephone" For="@(()=>input!.PhoneNumber)" Label="رقم الهاتف"></MudTextField>
+
+                            </MudForm>
+                          
+                            <MudGrid>
+                                <MudItem>
+                                    <MudButton Class="mt-3 text-center" OnClick="submitForm" Variant="Variant.Outlined" Color="Color.Primary" Disabled="@(!success)">تسجيل</MudButton>
+
+                                </MudItem>
+                                <MudItem >
+                                    <MudNavLink Style="padding-top:10px;" Icon="@Icons.Material.Filled.Login" Href="/account/login" Match="NavLinkMatch.All">تسجيل الدخول</MudNavLink>
+
+                                </MudItem>
+                            </MudGrid>
+
+                           
+                        </MudPaper>
+       
+                </MudItem>
+   
+            </MudGrid>  
+            </MudCardContent>
+        </MudCard>
+    </MudItem>
+</MudGrid>
+@code{
+    bool success;
+    string[] errors = { };
+    
+    MudForm? form;
+    AppUserDto? input;
+    string error = "";
+    string PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+    bool isShow;
+    InputType PasswordInput = InputType.Password;
+
+    protected override void OnInitialized()
+    {
+        input = new();
+        base.OnInitialized();
+    }
+    void OnClickShowPassword()
+    {
+        @if (isShow)
+        {
+            isShow = false;
+            PasswordInputIcon = Icons.Material.Filled.VisibilityOff;
+            PasswordInput = InputType.Password;
+        }
+        else
+        {
+            isShow = true;
+            PasswordInputIcon = Icons.Material.Filled.Visibility;
+            PasswordInput = InputType.Text;
+        }
+    }
+    private  void register()
+    {
+        try
+        {
+            var user = input!.AppUser;
+            userService.InsertUser(user);
+            input = null;
+        }
+        catch 
+        {
+
+            error = "عذرا لم يتم انشاء المستخدم";
+        }
+
+    }
+
+    private void submitForm(EventArgs eventArgs)
+    {
+
+        if (!form!.IsValid)
+        {
+            Snackbar.ErrorMessageCenterButton("يرجى التحقق من المدخلات");
+            return;
+        }
+        if (userService.IsReadyEmailAdded(input!.Email!))
+        {
+            Snackbar.ErrorMessageCenterButton("عذرا البريد الإلكتروني مسجل بالنظام");
+            return;
+        }
+        if(userService.IsReadyUserNameAdded(input!.UserName!))
+        {
+            Snackbar.ErrorMessageCenterButton("عذرا اسم المستخدم مسجل بالنظام");
+            return;
+        }
+       
+
+        if(userService.InsertUser(input.AppUser) <= 0)
+        {
+            Snackbar.ErrorMessageCenterButton("عذرا لم يتم الحفظ");
+
+        }
+        else
+        {
+            Snackbar.SuccessMessageCenterButton("تم التسجيل بنجاح");
+            form.Reset();
+
+        }
+
+    }
+}
